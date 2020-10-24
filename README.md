@@ -26,7 +26,7 @@ lullaby db = new lullaby("User.txt",6);<br>
   <tr><td>20203</td><td>adi</td><td>tangerang</td></tr>
 </table>
 <br>
-<h4><span>selectAll()<hr></span></h4>
+<h3>selectAll()</h3>
 print all query in database<br>
 <h5>Usage : </h5>
 <code>System.out.println(db.selectAll());</code>
@@ -36,7 +36,7 @@ print all query in database<br>
 20202,ana,new york<br>
 20203,adi,tangerang</b>
 <br><br>
-<h4><span style="border-bottom:1px solid blue;">selectWhere(String equal, int where)</span></h4>
+<h3>selectWhere(String equal, int where)</h3>
 query database selection where your selection is <b>equal</b> and column is <b>where</b><br>
 <h5>Usage : </h5>
 <code>System.out.println(db.selectWhere("ana",1)[0]);</code>
@@ -44,20 +44,20 @@ query database selection where your selection is <b>equal</b> and column is <b>w
 <b><p>it will print :</p>
 20202</b>
 <br><br>
-<h4><span style="border-bottom:1px solid blue;">insert(String[] insert)</span></h4>
+<h3>insert(String[] insert)</h3>
 <p>insert query into database</p>
 <code>String[] arry = {"20204","molly","Bandung"};</code>
 <br>
 <code>db.insert(array);</code>
 <br><br>
-<h4><span style="border-bottom:1px solid blue;">update(String equal, int where, int oldString, String newString)</span></h4>
+<h3>update(String equal, int where, int oldString, String newString)</h3>
 update a query in database
 <h5>Usage : </h5>
 <code>db.update("ana",1,2,"jakarta");</code>
 
 <b><p>it will update ana address from new york into jakarta</p></b>
 <br>
-<h4><span style="border-bottom:1px solid blue;">delete(String equal, int where)</span></h4>
+<h3>delete(String equal, int where)</h3>
 delete a row in database where query is <b>equal</b> and where is column<br>
 <h5>Usage : </h5>
 <code>db.delete(20203,0);</code>
