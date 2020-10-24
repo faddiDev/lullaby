@@ -1,20 +1,18 @@
 /*
 	Creator : Faddi Susanto
-	Java database text
+	Java database text to store your data
 	This API created where SQL is not needed
 	or created Application without using SQL database
 */
-package com.pos.Model;
 
 import java.io.*;
 import java.util.*;
 
-public class lullaby{
+public class lullaby {
 
 	public String[][] store;
 	public FileInputStream finput = null;
 	public FileOutputStream foutput = null;
-	public String selectAll = "";
 	public String slt = "";
 	public String fileName = "";
 	public int kolom;
@@ -23,7 +21,7 @@ public class lullaby{
 		fileName : file name for tables database
 		kolom : number of array column
 	*/
-	public lullaby(String fileName, int kolom){
+	public lullaby(String fileName, int kolom) {
 		this.fileName = fileName;
 		this.kolom = kolom;
 		int fdata;
@@ -34,17 +32,17 @@ public class lullaby{
 		}
 		try{
 			while((fdata = finput.read()) != -1){
-				selectAll += (char) fdata;
-				slt += (char) fdata;
+				this.slt += (char) fdata;
 			}
-		String[] ary = slt.split("\n");
-		int lgt = ary.length;
-		store = new String[lgt][kolom]; //kolom banyaknya kolom database ditentukan
-		for(int i=0;i<store.length;i++){
-			store[i] = ary[i].split(",");
-		}
-		}catch(IOException ioe){
-			System.out.println(ioe.getMessage());
+			byte[] decrypted = Base64.getDecoder().decode((this.slt.getBytes("UTF-8")));
+			String[] ary = new String(decrypted).split("\n");
+			int lgt = ary.length;
+			this.store = new String[lgt][kolom]; //kolom banyaknya kolom database ditentukan
+			for(int i=0;i<this.store.length;i++){
+				this.store[i] = ary[i].split(",");
+			}
+		}catch(Exception e){
+			System.out.println(e.getMessage());
 		}
 		try{
 			finput.close();
@@ -53,39 +51,41 @@ public class lullaby{
 		}
 	}
 
-	public void selectAll(){
-		System.out.println(selectAll);
+	public void selectAll() throws Exception {
+		byte[] decrypted = Base64.getDecoder().decode((this.slt.getBytes("UTF-8")));
+		System.out.println(new String(decrypted));
 		return;
 	}
 
 	public String[] selectWhere(String equal, int where){
 		String[] selects = null;
-		for(int i=0;i<store.length;i++){
-			if(store[i][where].equals(equal)){
-				String ary = Arrays.toString(store[i]).replace("[","").replace("]","");
+		for(int i=0;i<this.store.length;i++){
+			if(this.store[i][where].equals(equal)){
+				String ary = Arrays.toString(this.store[i]).replace("[","").replace("]","");
 				selects = ary.split(",");
 			}
 		}
 		return selects;
 	}
 
-	public String[][] selectmultiWhere(String equal, int where){
-		String[][] selects = new String[store.length][kolom];
-		for(int i=0;i<store.length;i++){
-			if(store[i][where].equals(equal)){
-				String ary = Arrays.toString(store[i]).replace("[","").replace("]","");
+	public String[][] selectMultiWhere(String equal, int where){
+		String[][] selects = new String[this.store.length][kolom];
+		for(int i=0;i<this.store.length;i++){
+			if(this.store[i][where].equals(equal)){
+				String ary = Arrays.toString(this.store[i]).replace("[","").replace("]","");
 				selects[i] = ary.split(",");
 			}
 		}
 		return selects;
 	}
 
-	public void insert(String[] inserts){
-		String sve = "";
+	public void insert(String[] inserts) throws Exception {
+		String sva = "";
 		for(int i=0;i<inserts.length;i++){
-			sve += inserts[i] + ",";
+			sva += inserts[i] + ",";
 		}
-		sve += "\n";
+		sva += "\n";
+		String sve = Base64.getEncoder().encodeToString(sva.getBytes("UTF-8"));
 		try{
 			foutput = new FileOutputStream(fileName, true); //nama files
 		}catch(FileNotFoundException fnfe){
@@ -109,13 +109,13 @@ public class lullaby{
 
 	public void update(String equal, int where, int oldString, String newString){
 		String datas = "";
-		for(int i=0;i<store.length;i++){
-			if(store[i][where].equals(equal)){
-				store[i][oldString] = newString;
-				String st = Arrays.toString(store[i]).replace("[","").replace("]","").replace(", ",",").replace(",  ",",");
-				store[i] = st.split(",");
+		for(int i=0;i<this.store.length;i++){
+			if(this.store[i][where].equals(equal)){
+				this.store[i][oldString] = newString;
+				String st = Arrays.toString(this.store[i]).replace("[","").replace("]","").replace(", ",",").replace(",  ",",");
+				this.store[i] = st.split(",");
 			}
-			datas += Arrays.toString(store[i]).replace("[","").replace("]","").replace(", ",",").replace(",  ",",") + "\n";
+			datas += Arrays.toString(this.store[i]).replace("[","").replace("]","").replace(", ",",").replace(",  ",",") + "\n";
 		}
 		try{
 			foutput = new FileOutputStream(fileName);
@@ -123,8 +123,9 @@ public class lullaby{
 			System.out.println("File Tidak Ditemukan");
 		}
 		try{
-			for(int i=0;i<datas.length();i++){
-				foutput.write((int) datas.charAt(i));
+			String dataSave = Base64.getEncoder().encodeToString(datas.getBytes("UTF-8"));
+			for(int i=0;i<dataSave.length();i++){
+				foutput.write((int) dataSave.charAt(i));
 			}
 		}catch(IOException ioe){
 			System.out.println(ioe.getMessage());
@@ -140,11 +141,11 @@ public class lullaby{
 
 	public void delete(String equal, int where){
 		String datas = "";
-		for(int i=0;i<store.length;i++){
-			if(store[i][where].equals(equal)){
-				store[i] = null;
+		for(int i=0;i<this.store.length;i++){
+			if(this.store[i][where].equals(equal)){
+				this.store[i] = null;
 			}
-			datas += Arrays.toString(store[i]).replace("[","").replace("]","").replace(", ",",").replace(",  ",",") + "\n";
+			datas += Arrays.toString(this.store[i]).replace("[","").replace("]","").replace(", ",",").replace(",  ",",") + "\n";
 		}
 		try{
 			foutput = new FileOutputStream(fileName);
@@ -152,8 +153,9 @@ public class lullaby{
 			System.out.println("File Tidak Ditemukan");
 		}
 		try{
-			for(int i=0;i<datas.length();i++){
-				foutput.write((int) datas.charAt(i));
+			String dataSave = Base64.getEncoder().encodeToString(datas.getBytes("UTF-8"));
+			for(int i=0;i<dataSave.length();i++){
+				foutput.write((int) dataSave.charAt(i));
 			}
 		}catch(IOException ioe){
 			System.out.println(ioe.getMessage());
