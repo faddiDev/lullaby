@@ -26,7 +26,7 @@ lullaby db = new lullaby("User.txt",6);<br>
   <tr><td>20203</td><td>adi</td><td>tangerang</td></tr>
 </table>
 <br>
-<h4><span style="border-bottom:1px solid blue;">selectAll()</span></h4>
+<h4><span>selectAll()<hr></span></h4>
 print all query in database<br>
 <h5>Usage : </h5>
 <code>System.out.println(db.selectAll());</code>
