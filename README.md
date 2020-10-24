@@ -60,7 +60,7 @@ update a query in database
 <h3>delete(String equal, int where)</h3>
 delete a row in database where query is <b>equal</b> and where is column<br>
 <h5>Usage : </h5>
-<code>db.delete(20203,0);</code>
+<code>db.delete("20203",0);</code>
 
 <b><p>it will delete the entire row of 20203 id</p></b>
 <br /><br />
