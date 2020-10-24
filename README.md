@@ -30,7 +30,7 @@ lullaby db = new lullaby("User.txt",6);<br>
 print all query in database<br>
 <h5>Usage : </h5>
 <code>System.out.println(db.selectAll());</code>
-<br />
+
 <b><p>it will print :</p>
 20201,ani,mexico,<br>
 20202,ana,new york<br>
@@ -40,7 +40,7 @@ print all query in database<br>
 query database selection where your selection is <b>equal</b> and column is <b>where</b><br>
 <h5>Usage : </h5>
 <code>System.out.println(db.selectWhere("ana",1)[0]);</code>
-<br />
+
 <b><p>it will print :</p>
 20202</b>
 <br><br>
@@ -54,14 +54,14 @@ query database selection where your selection is <b>equal</b> and column is <b>w
 update a query in database
 <h5>Usage : </h5>
 <code>db.update("ana",1,2,"jakarta");</code>
-<br />
+
 <b><p>it will update ana address from new york into jakarta</p></b>
 <br>
 <h4>delete(String equal, int where)</h4>
 delete a row in database where query is <b>equal</b> and where is column<br>
 <h5>Usage : </h5>
 <code>db.delete(20203,0);</code>
-<br />
+
 <b><p>it will delete the entire row of 20203 id</p></b>
 <br /><br />
 Faddi Susanto&copy;2020
