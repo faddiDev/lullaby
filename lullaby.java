@@ -10,10 +10,11 @@ import java.util.*;
 
 public class lullaby {
 
-	public String[][] store;
-	public FileInputStream finput = null;
-	public FileOutputStream foutput = null;
-	public String slt = "";
+	private Secret secret;
+	private String[][] store;
+	private FileInputStream finput = null;
+	private FileOutputStream foutput = null;
+	private String slt = "";
 	public String fileName = "";
 	public int kolom;
 
@@ -22,20 +23,20 @@ public class lullaby {
 		kolom : number of array column
 	*/
 	public lullaby(String fileName, int kolom) {
+		this.secret = new Secret();
 		this.fileName = fileName;
 		this.kolom = kolom;
 		int fdata;
 		try{
-			finput = new FileInputStream(fileName); //nama files
+			this.finput = new FileInputStream(fileName); //nama files
 		}catch(FileNotFoundException fnfe){
 			System.out.println("File Tidak Ditemukan.");
 		}
 		try{
-			while((fdata = finput.read()) != -1){
+			while((fdata = this.finput.read()) != -1){
 				this.slt += (char) fdata;
 			}
-			byte[] decrypted = Base64.getDecoder().decode((this.slt.getBytes("UTF-8")));
-			String[] ary = new String(decrypted).split("\n");
+			String[] ary = this.secret.Decryption(this.slt).split("\n");
 			int lgt = ary.length;
 			this.store = new String[lgt][kolom]; //kolom banyaknya kolom database ditentukan
 			for(int i=0;i<this.store.length;i++){
@@ -45,16 +46,20 @@ public class lullaby {
 			System.out.println(e.getMessage());
 		}
 		try{
-			finput.close();
+			this.finput.close();
 		}catch(IOException ioe){
 			System.out.println(ioe.getMessage());
 		}
 	}
 
 	public void selectAll() throws Exception {
-		byte[] decrypted = Base64.getDecoder().decode((this.slt.getBytes("UTF-8")));
-		System.out.println(new String(decrypted));
+		String decrypted = this.secret.Decryption(this.slt);
+		System.out.println(decrypted);
 		return;
+	}
+
+	public String[][] selectMultiAll() {
+		return this.store;
 	}
 
 	public String[] selectWhere(String equal, int where){
@@ -69,7 +74,7 @@ public class lullaby {
 	}
 
 	public String[][] selectMultiWhere(String equal, int where){
-		String[][] selects = new String[this.store.length][kolom];
+		String[][] selects = new String[this.store.length][this.kolom];
 		for(int i=0;i<this.store.length;i++){
 			if(this.store[i][where].equals(equal)){
 				String ary = Arrays.toString(this.store[i]).replace("[","").replace("]","");
@@ -85,22 +90,22 @@ public class lullaby {
 			sva += inserts[i] + ",";
 		}
 		sva += "\n";
-		String sve = Base64.getEncoder().encodeToString(sva.getBytes("UTF-8"));
+		String sve = this.secret.Encryption(sva);
 		try{
-			foutput = new FileOutputStream(fileName, true); //nama files
+			this.foutput = new FileOutputStream(this.fileName, true); //nama files
 		}catch(FileNotFoundException fnfe){
 			System.out.println("File Tidak Ditemukan.");
 		}
 		try{
 			for(int i=0;i<sve.length();i++){
-				foutput.write((int) sve.charAt(i));
+				this.foutput.write((int) sve.charAt(i));
 			}
 		}catch(IOException ioe){
 			System.out.println(ioe.getMessage());
 		}
 		try{
-			foutput.flush();
-			foutput.close();
+			this.foutput.flush();
+			this.foutput.close();
 		}catch(IOException ioe){
 			System.out.println(ioe.getMessage());
 		}
@@ -118,21 +123,21 @@ public class lullaby {
 			datas += Arrays.toString(this.store[i]).replace("[","").replace("]","").replace(", ",",").replace(",  ",",") + "\n";
 		}
 		try{
-			foutput = new FileOutputStream(fileName);
+			this.foutput = new FileOutputStream(this.fileName);
 		}catch(FileNotFoundException fnfe){
 			System.out.println("File Tidak Ditemukan");
 		}
 		try{
-			String dataSave = Base64.getEncoder().encodeToString(datas.getBytes("UTF-8"));
+			String dataSave = this.secret.Encryption(datas);
 			for(int i=0;i<dataSave.length();i++){
-				foutput.write((int) dataSave.charAt(i));
+				this.foutput.write((int) dataSave.charAt(i));
 			}
 		}catch(IOException ioe){
 			System.out.println(ioe.getMessage());
 		}
 		try{
-			foutput.flush();
-			foutput.close();
+			this.foutput.flush();
+			this.foutput.close();
 		}catch(IOException ioe){
 			System.out.println(ioe.getMessage());
 		}
@@ -148,21 +153,21 @@ public class lullaby {
 			datas += Arrays.toString(this.store[i]).replace("[","").replace("]","").replace(", ",",").replace(",  ",",") + "\n";
 		}
 		try{
-			foutput = new FileOutputStream(fileName);
+			this.foutput = new FileOutputStream(this.fileName);
 		}catch(FileNotFoundException fnfe){
 			System.out.println("File Tidak Ditemukan");
 		}
 		try{
-			String dataSave = Base64.getEncoder().encodeToString(datas.getBytes("UTF-8"));
+			String dataSave = this.secret.Encryption(datas);
 			for(int i=0;i<dataSave.length();i++){
-				foutput.write((int) dataSave.charAt(i));
+				this.foutput.write((int) dataSave.charAt(i));
 			}
 		}catch(IOException ioe){
 			System.out.println(ioe.getMessage());
 		}
 		try{
-			foutput.flush();
-			foutput.close();
+			this.foutput.flush();
+			this.foutput.close();
 		}catch(IOException ioe){
 			System.out.println(ioe.getMessage());
 		}
